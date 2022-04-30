@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess the number!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ribeye+Marrow&display=swap" rel="stylesheet">
+</head>
+<body>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'guess/style.css' %}">
+
+<form action="{% url 'guess:new_game' %}" method="post">
+    {% csrf_token %}
+    <button class="index box"
+            type="submit"
+            name="new_game_btn">New Game
+    </button>
+</form>
+
+<div class="game-names-container box">
+    <h3 class="index">Open games</h3>
+    {% if unfinished_games %}
+        <ul>
+            {% for unfinished_game in unfinished_games %}
+                <li class="index"><a class="index"
+                                     href="{% url 'guess:detail' unfinished_game.id %}">{{ unfinished_game }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="message">No open games available. Start playing!</p>
+    {% endif %}
+</div>
+<div class="game-names-container box">
+    <h3 class="index">Closed games</h3>
+    {% if finished_games %}
+        <ul>
+            {% for finished_game in finished_games %}
+                <li class="index"><a class="index"
+                                     href="{% url 'guess:inspect' finished_game.id %}">{{ finished_game }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="message">No closed games available. You must guess that number!</p>
+        </div>
+    {% endif %}
+
+
+</body>
+</html>
